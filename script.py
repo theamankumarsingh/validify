@@ -1,5 +1,10 @@
 #imports
 import openpyxl
+import preparation
 
+#import sheet from workbook
 wb=openpyxl.load_workbook('NGOs_Name_with_Address.xlsx')
-sheet=wb.get_sheet_by_name('Sheet1')
+sheet=wb['Sheet1']
+
+#pre-processing
+dataset,data_dict=preparation.prepare(sheet)
