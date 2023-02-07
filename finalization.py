@@ -19,8 +19,10 @@ def change(working_data_dict, data_dict):
         data_dict[key]=working_data_dict[key]
     return data_dict
 
-def check(dataset):
+def check(dataset, skip=False):
     #check if websites are valid
+    if skip:
+        return []
     test_res=[]
     print("Checking websites...")
     for i in progressbar(range(len(dataset))):
