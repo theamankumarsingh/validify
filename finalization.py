@@ -13,6 +13,12 @@ def modify(dataset, data_dict):
         dataset[row]=tuple(dataset[row])
     return dataset
 
+def change(working_data_dict, data_dict):
+    #apply changes to data_dict
+    for key in working_data_dict:
+        data_dict[key]=working_data_dict[key]
+    return data_dict
+
 def check(dataset):
     #check if websites are valid
     test_res=[]

@@ -9,10 +9,12 @@ sheet=wb['Sheet1']
 
 #pre-processing
 dataset,data_dict=preparation.prepare(sheet)
+working_data_dict=preparation.filter_bad_data(data_dict)
 
 #cleaning
 
 #post-processing
+data_dict=finalization.change(working_data_dict,data_dict)
 dataset=finalization.modify(dataset,data_dict)
 test_res=finalization.check(dataset)
 
