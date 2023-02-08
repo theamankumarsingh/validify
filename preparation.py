@@ -15,6 +15,7 @@ def prepare(sheet):
 
 def filter_bad_data(data_dict):
     filter_res={}
+    problem_res={}
     print("Filtering websites...")
     for i in progressbar(range(len(data_dict))):
         web_url=data_dict[i+1] 
@@ -26,7 +27,9 @@ def filter_bad_data(data_dict):
                 stat_code=response.status_code
             except Exception as exception:
                 filter_res[i+1]=web_url
+                problem_res[i+1]=(1,type(exception).__name__)
                 continue;
             if not(stat_code == 200):
                 filter_res[i+1]=web_url
-    return filter_res
+                problem_res[i+1]=(0,stat_code)
+    return filter_res, problem_res
