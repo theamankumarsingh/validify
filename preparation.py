@@ -17,7 +17,7 @@ def filter_bad_data(data_dict):
     filter_res={}
     print("Filtering websites...")
     for i in progressbar(range(len(data_dict))):
-        web_url=data_dict[i+1]
+        web_url=data_dict[i+1] 
         if web_url==None or web_url=="Not Available":
             continue;
         else:
