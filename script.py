@@ -15,15 +15,15 @@ working_data_dict=preparation.filter_bad_data(data_dict)
 print(working_data_dict)
 
 #cleaning
-clean.dict_to_workbook(working_data_dict)
+#autoclean
 
-#manually fix invalid URL in workbook
-working_data_dict = clean.workbook_to_dict(working_data_dict)
+#clean (manual)
+working_data_dict=clean.start_manual(working_data_dict,"NGOs_Name_with_Address_working.xlsx",skip=False)
 
 #post-processing
 data_dict=finalization.change(working_data_dict,data_dict)
 dataset=finalization.modify(dataset,data_dict)
-test_res=finalization.check(dataset,skip=True)
+test_res=finalization.check(dataset,skip=False)
 
 #write sheet to workbook
 wb_new = openpyxl.Workbook()
