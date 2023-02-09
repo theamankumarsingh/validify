@@ -15,7 +15,7 @@ def dict_to_workbook(working_data_dict,data_problem_dict,workbook_name):
         sheet['A'+str(row)]=key
         sheet['B'+str(row)]=working_data_dict[key]
         if data_problem_dict[key]==():
-            sheet['C'+str(row)]="fixed"
+            sheet['C'+str(row)]="autofix"
         else:
             sheet['C'+str(row)]=str(data_problem_dict[key])
         row+=1
@@ -32,7 +32,7 @@ def workbook_to_dict(workbook_name):
 def start_manual(working_data_dict,data_problem_dict,workbook_name,skip=True):
     if skip:
         return working_data_dict
-    print("Starting manual cleaning...")
+    print("Starting manual cleaning ...")
     dict_to_workbook(working_data_dict,data_problem_dict,workbook_name)
-    input("Please edit the file "+workbook_name+" and save it before proceeding. Press Enter to continue...")
+    input("Please edit the file "+workbook_name+" and save it before proceeding. Press Enter to continue ...")
     return workbook_to_dict(workbook_name)

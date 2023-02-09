@@ -3,27 +3,46 @@ import openpyxl
 import preparation
 import clean
 import finalization
+import sys
+
+#read source workbook from command line
+if len(sys.argv) < 2:
+    print("Usage: python3 script.py <workbook_name>")
+    sys.exit(1)
+else:
+    workbook_name=sys.argv[1]
+workbook_ext=".xlsx"
+if workbook_name[-5:] == ".xlsx":
+    workbook_name=workbook_name[:-5]
 
 #read sheet from workbook
-wb=openpyxl.load_workbook('NGOs_Name_with_Address.xlsx')
+print("Reading workbook from file "+workbook_name+workbook_ext+" ...")
+try:
+    wb=openpyxl.load_workbook(workbook_name+workbook_ext)
+except Exception as exception:
+    print("Error: "+type(exception).__name__+" while reading workbook from file "+workbook_name+workbook_ext)
+    sys.exit(1)
 sheet=wb['Sheet1']
 
 #pre-processing
 dataset,data_dict=preparation.prepare(sheet)
 working_data_dict,data_problem_dict=preparation.filter_bad_data(data_dict)
+backup_data_dict=working_data_dict.copy()
 
 #cleaning
 #autoclean
 
 #clean (manual)
-working_data_dict=clean.start_manual(working_data_dict,data_problem_dict,"NGOs_Name_with_Address_working.xlsx",skip=False)
+working_data_dict=clean.start_manual(working_data_dict,data_problem_dict,workbook_name+"_edit"+workbook_ext,skip=False)
 
 #post-processing
 data_dict=finalization.change(working_data_dict,data_dict)
 dataset=finalization.modify(dataset,data_dict)
+diff_res=finalization.diff(backup_data_dict,working_data_dict,data_problem_dict,skip=False)
 test_res=finalization.check(dataset,skip=False)
 
 #write sheet to workbook
+print("Writing workbook to file "+workbook_name+"_out"+workbook_ext+" ...")
 wb_new = openpyxl.Workbook()
 sheet_new = wb_new['Sheet']
 sheet_new['A1']="Name"
@@ -40,11 +59,25 @@ for row in range(1,len(dataset)+1):
 if len(test_res):
     wb_new.create_sheet('Test')
     sheet_new = wb_new['Test']
-    sheet_new['A1']="Website"
-    sheet_new['B1']="Check"
-    sheet_new['C1']="Error"
+    sheet_new['A1']="Key No."
+    sheet_new['B1']="Website"
+    sheet_new['C1']="Check"
+    sheet_new['D1']="Error"
     for row in range(1,len(test_res)+1):
         sheet_new['A'+str(row+1)]=test_res[row-1][0]
         sheet_new['B'+str(row+1)]=test_res[row-1][1]
         sheet_new['C'+str(row+1)]=test_res[row-1][2]
-wb_new.save('NGOs_Name_with_Address_cleaned.xlsx')
+        sheet_new['D'+str(row+1)]=test_res[row-1][3]
+if len(diff_res):
+    wb_new.create_sheet('Diff')
+    sheet_new = wb_new['Diff']
+    sheet_new['A1']="Key No."
+    sheet_new['B1']="Original Website"
+    sheet_new['C1']="Changed Website"
+    sheet_new['D1']="Fix"
+    for row in range(1,len(diff_res)+1):
+        sheet_new['A'+str(row+1)]=diff_res[row-1][0]
+        sheet_new['B'+str(row+1)]=diff_res[row-1][1]
+        sheet_new['C'+str(row+1)]=diff_res[row-1][2]
+        sheet_new['D'+str(row+1)]=diff_res[row-1][3]
+wb_new.save(workbook_name+"_out"+workbook_ext)

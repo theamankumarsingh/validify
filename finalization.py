@@ -24,21 +24,33 @@ def check(dataset, skip=False):
     if skip:
         return []
     test_res=[]
-    print("Checking websites...")
+    print("Checking websites ...")
     for i in progressbar(range(len(dataset))):
         element=dataset[i]
         if element[5]==None or element[5]=="Not Available":
-            test_res.append((element[5],"Skip",""))
+            test_res.append((element[0],element[5],"skip",""))
             continue;
         else:
             try:
                 response = requests.get(element[5],headers=header)
                 stat_code=response.status_code
             except Exception as exception:
-                test_res.append((element[5],"exception",type(exception).__name__))
+                test_res.append((element[0],element[5],"exception",type(exception).__name__))
                 continue;
             if stat_code == 200:
-                test_res.append((element[5],"good",str(stat_code)))
+                test_res.append((element[0],element[5],"good",str(stat_code)))
             else:
-                test_res.append((element[5],"bad",str(stat_code)))
+                test_res.append((element[0],element[5],"bad",str(stat_code)))
     return test_res
+
+def diff(original_data_diff, working_data_diff, problem_data_diff, skip=True):
+    if skip:
+        return []
+    diff_res=[]
+    for key in original_data_diff.keys():
+        if original_data_diff[key]!=working_data_diff[key]:
+            if problem_data_diff[key]==():
+                diff_res.append((key,original_data_diff[key],working_data_diff[key],"auto"))
+            else:
+                diff_res.append((key,original_data_diff[key],working_data_diff[key],"manual"))
+    return diff_res
