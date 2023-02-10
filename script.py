@@ -31,6 +31,7 @@ backup_data_dict=working_data_dict.copy()
 
 #cleaning
 #autoclean
+working_data_dict,data_problem_dict=clean.start_autofix(working_data_dict,data_problem_dict,skip=False)
 
 #clean (manual)
 working_data_dict=clean.start_manual(working_data_dict,data_problem_dict,workbook_name+"_edit"+workbook_ext,skip=False)
