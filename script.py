@@ -22,10 +22,10 @@ try:
 except Exception as exception:
     print("Error: "+type(exception).__name__+" while reading workbook from file "+workbook_name+workbook_ext)
     sys.exit(1)
-sheet=wb['Sheet1']
+sheet=wb['Sheet']
 
 #pre-processing
-dataset,data_dict=preparation.prepare(sheet,duplicates=False)
+dataset,data_dict=preparation.prepare(sheet,duplicates=True)
 working_data_dict,data_problem_dict=preparation.filter_bad_data(data_dict)
 backup_data_dict=working_data_dict.copy()
 
@@ -34,7 +34,7 @@ backup_data_dict=working_data_dict.copy()
 working_data_dict,data_problem_dict=clean.start_autofix(working_data_dict,data_problem_dict,skip=False)
 
 #clean (manual)
-working_data_dict=clean.start_manual(working_data_dict,data_problem_dict,workbook_name+"_edit"+workbook_ext,skip=False)
+working_data_dict=clean.start_manual(working_data_dict,data_problem_dict,workbook_name+"_edit"+workbook_ext,skip=True)
 
 #post-processing
 diff_res,problem_keys=finalization.diff(backup_data_dict,working_data_dict,data_problem_dict)
@@ -79,3 +79,4 @@ if len(diff_res):
         sheet_new['B'+str(row+1)]=diff_res[row-1][1]
         sheet_new['C'+str(row+1)]=diff_res[row-1][2]
 wb_new.save(workbook_name+"_out"+workbook_ext)
+print("Done!")
