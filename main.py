@@ -28,7 +28,7 @@ try:
 except Exception as exception:
     print("Error: "+type(exception).__name__+" while reading workbook from file "+workbook_name+workbook_ext)
     sys.exit(1)
-sheet=wb['Sheet1']
+sheet=wb['Sheet']
 dataset,data_dict=preparation.prepare(sheet,duplicates=False)
 wb.close()
 dataset_t = np.array_split(dataset, process)
@@ -66,7 +66,7 @@ for i in range(process):
     try:
         wb=openpyxl.load_workbook(workbook_name+str(i)+"_out"+workbook_ext)
     except Exception as exception:
-        print("Error: "+type(exception).__name__+" while reading workbook from file "+workbook_name+workbook_ext)
+        print("Error: "+type(exception).__name__+" while reading workbook from file "+workbook_name+str(i)+"_out"+workbook_ext)
         sys.exit(1)
     sheet=wb['Sheet']
     for row in range(2,sheet.max_row+1):

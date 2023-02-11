@@ -49,7 +49,7 @@ def clean_url(url):
     pattern = r"[^\w]+"
     match = re.search(pattern, url)
     if not match:
-        return "","",domain
+        return "","",url
     prefix=url[:match.start()]
     domain=url[match.end():]
     symbol=match.group()
