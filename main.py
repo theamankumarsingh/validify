@@ -58,4 +58,37 @@ print("Starting all processes ("+str(process)+") ...")
 for p in processes:
     p.start()
 input("Please wait for completion, then press enter to exit ...")
+
+#join all worksheets
+final_dataset=[]
+print("Joining all worksheets ...")
+for i in range(process):
+    try:
+        wb=openpyxl.load_workbook(workbook_name+str(i)+"_out"+workbook_ext)
+    except Exception as exception:
+        print("Error: "+type(exception).__name__+" while reading workbook from file "+workbook_name+workbook_ext)
+        sys.exit(1)
+    sheet=wb['Sheet']
+    for row in range(2,sheet.max_row+1):
+        final_dataset.append((sheet['A'+str(row)].value,sheet['B'+str(row)].value,sheet['C'+str(row)].value,sheet['D'+str(row)].value,sheet['E'+str(row)].value))
+    wb.close()
+
+#write final dataset to file
+print("Writing to file "+workbook_name+"_output"+workbook_ext+" ...")
+wb_new = openpyxl.Workbook()
+sheet_new = wb_new['Sheet']
+sheet_new['A1']="Name"
+sheet_new['B1']="Register Number"
+sheet_new['C1']="Mobile Number"
+sheet_new['D1']="Email-Id"
+sheet_new['E1']="WebURL"
+for row in range(1,len(final_dataset)+1):
+    sheet_new['A'+str(row+1)]=final_dataset[row-1][0]
+    sheet_new['B'+str(row+1)]=final_dataset[row-1][1]
+    sheet_new['C'+str(row+1)]=final_dataset[row-1][2]
+    sheet_new['D'+str(row+1)]=final_dataset[row-1][3]
+    sheet_new['E'+str(row+1)]=final_dataset[row-1][4]
+wb_new.save(workbook_name+"_output"+workbook_ext)
+wb_new.close()
+print("All done!")
 sys.exit(0)
