@@ -5,6 +5,8 @@ header = {
     'user-agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:15.0) Gecko/20100101 Firefox/15.0.1',
 }
 
+time_out=60
+
 def modify(dataset, data_dict):
     #modify dataset
     for row in range(len(dataset)):
@@ -32,7 +34,7 @@ def check(dataset, skip=False):
             continue;
         else:
             try:
-                response = requests.get(element[5],headers=header)
+                response = requests.get(element[5],headers=header,timeout=time_out)
                 stat_code=response.status_code
             except Exception as exception:
                 test_res.append((element[5],"exception",type(exception).__name__))

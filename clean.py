@@ -7,6 +7,8 @@ header = {
     'user-agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:15.0) Gecko/20100101 Firefox/15.0.1',
 }
 
+time_out=60
+
 def dict_to_workbook(working_data_dict,data_problem_dict,workbook_name):
     wb = openpyxl.Workbook()
     sheet = wb['Sheet']
@@ -72,12 +74,12 @@ def fix_url(prefix,symbol,domain):
     url_1="https://"+domain
     url_2="http://"+domain
     try:
-        response_1=requests.get(url_1,headers=header)
+        response_1=requests.get(url_1,headers=header,timeout=time_out)
         stat_code_1=response_1.status_code
     except Exception as exception:
         stat_code_1=0
     try:
-        response_2=requests.get(url_2,headers=header)
+        response_2=requests.get(url_2,headers=header,timeout=time_out)
         stat_code_2=response_2.status_code
     except Exception as exception:
         stat_code_2=0

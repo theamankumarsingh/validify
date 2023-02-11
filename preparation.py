@@ -5,6 +5,8 @@ header = {
     'user-agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:15.0) Gecko/20100101 Firefox/15.0.1',
 }
 
+time_out=60
+
 def prepare(sheet,duplicates=True):
     dataset=[]
     data_dict={}
@@ -25,7 +27,7 @@ def filter_bad_data(data_dict):
     for i in progressbar(range(len(data_dict))):
         web_url=data_dict[i+1] 
         try:
-            response = requests.get(web_url,headers=header)
+            response = requests.get(web_url,headers=header,timeout=time_out)
             stat_code=response.status_code
         except Exception as exception:
             filter_res[i+1]=web_url
