@@ -26,6 +26,7 @@ def dict_to_workbook(working_data_dict,data_problem_dict,workbook_name):
             sheet['C'+str(row)]=str(data_problem_dict[key])
         row+=1
     wb.save(workbook_name)
+    wb.close()
 
 def workbook_to_dict(workbook_name):
     data_dict={}

@@ -26,6 +26,7 @@ sheet=wb['Sheet']
 
 #pre-processing
 dataset,data_dict=preparation.prepare(sheet,duplicates=True)
+wb.close()
 working_data_dict,data_problem_dict=preparation.filter_bad_data(data_dict)
 backup_data_dict=working_data_dict.copy()
 
@@ -79,4 +80,5 @@ if len(diff_res):
         sheet_new['B'+str(row+1)]=diff_res[row-1][1]
         sheet_new['C'+str(row+1)]=diff_res[row-1][2]
 wb_new.save(workbook_name+"_out"+workbook_ext)
+wb_new.close()
 print("Done!")

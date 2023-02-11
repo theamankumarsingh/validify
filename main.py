@@ -29,8 +29,8 @@ except Exception as exception:
     print("Error: "+type(exception).__name__+" while reading workbook from file "+workbook_name+workbook_ext)
     sys.exit(1)
 sheet=wb['Sheet1']
-
 dataset,data_dict=preparation.prepare(sheet,duplicates=False)
+wb.close()
 dataset_t = np.array_split(dataset, process)
 
 processes=[]
@@ -50,6 +50,7 @@ for i in range(process):
         sheet_new['D'+str(row+1)]=dataset_n[row-1][4]
         sheet_new['E'+str(row+1)]=dataset_n[row-1][5]
     wb_new.save(workbook_name+str(i)+workbook_ext)
+    wb_new.close()
     processes.append(multiprocessing.Process(target=launch_script_with_terminal,args=(workbook_name+str(i),)))
 
 #start all processes
