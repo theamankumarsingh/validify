@@ -20,11 +20,7 @@ workbook_ext=".xlsx"
 if workbook_name[-5:] == ".xlsx":
     workbook_name=workbook_name[:-5]
 
-if code==0:
-    autofix=False
-    manualfix=True
-    cking=True
-elif code==1:
+if code==1:
     autofix=False
     manualfix=False
     cking=True
@@ -32,10 +28,14 @@ elif code==2:
     autofix=False
     manualfix=True
     cking=False
-else:
+elif code==2:
     autofix=False
     manualfix=False
     cking=False
+else:
+    autofix=False
+    manualfix=True
+    cking=True
 
 #read sheet from workbook
 print("Reading workbook from file "+workbook_name+workbook_ext+" ...")

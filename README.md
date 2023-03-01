@@ -4,7 +4,7 @@
 
 # <p align="center">Validify</p>
 
-A python script that dynamically performs URL validation and auto-correction using multi-processing and regex.
+A python script that dynamically performs URL validation in a database and auto-correction using multi-processing and regex.
 
 ## Key Features
 - Multiprocessing: By spawning the desired number of processes, the script significantly speeds up program execution.
@@ -13,27 +13,63 @@ A python script that dynamically performs URL validation and auto-correction usi
 
 ## How To Use
 To clone and run this application, you'll need Git and Python3 installed on your computer. From your command line:
-1. Activate the virtual environment
+
+1. Clone this respository
+```
+git clone https://github.com/theamankumarsingh/validify.git
+```
+
+2. Go into the repository
+```
+cd validify
+```
+
+3. Create python's virtual environment
+```
+python3 -m venv .
+```
+
+4. Activate the virtual environment
 ```
 source bin/acitvate
 ```
 
-2. Clone this respository
-```
-git clone https://github.com/theamankumarsingh/data-cleanup.git
-```
-
-3. Go into the repository
-```
-cd data-cleanup
-```
-
-4. Install the requirements
+5. Install the requirements
 ```
 pip3 install -r requirements.txt
 ```
 
-5. Run the script
+
+6. Run the script
 ```
-python3 main.py (<number of threads>)
+python3 main.py <Workbook file name (.xlsx)> <number of threads> <operating mode(optional)>
 ```
+
+## Operating Modes
+This script has an auto fix and a manual fix mode, as well as testing (checking) mode. These can be enabled/disabled by using operation codes:
+
+0: auto fix is on, manual fix is off, testing is off
+
+1: auto fix is on, manual fix is on, testing is off
+
+2: auto fix is on, manual fix is off, testing is on
+
+3: auto fix is on, manual fix is on, testing is on
+
+
+If operating code is not specified or any number other than mentioned is specified, the script defaults to code 0.
+
+## Note
+1. Make sure that the workbook's location is in the repository itself.
+2. Workbook's entries are in the format as follows:
+
+|Name|Address|Telephone|Email ID|WebURL|
+|----|-------|---------|--------|------|
+|Entry1|||||
+|Entry2|||||
+etc.
+
+The workbook should include the headings as well.
+
+## Application
+This script can be used to filter database of people with their details (name, address, telephone, email, URL) to ensure that data with only valid URLs remain.
