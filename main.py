@@ -27,6 +27,31 @@ workbook_ext=".xlsx"
 if workbook_name[-5:] == ".xlsx":
     workbook_name=workbook_name[:-5]
 
+logo='''
+                                                  
+                                                  
+                 ######(   (#####    .%%          
+             (((                   ##    %%       
+          ((         ((         ,##   %%          
+        #(                    ##          %       
+      ##       .((   (/     ##   ##        #(     
+     ##      #( ((    (     (    ##         ##    
+    /#    .##    ((   ((   ((   ##           #    
+        ##        #    (( ((    (       ##   ##   
+     .%%   ##      #    ( (    (      ##     /#   
+   %%              ##   /(    ((   ((        ##   
+ &&                 ##       ((              #    
+    &%               #*     /(      ((      ##    
+       #        %%*   #     #              (,     
+        &&    ,%         ##              ((       
+          &&           %%              ((         
+             &&*    %%    %        ###            
+                  %%   %%    ####                 
+               /&    %%                           
+'''
+
+print(logo)
+
 #read sheet from workbook
 print("Preparing file "+workbook_name+workbook_ext+" for execution ...")
 try:

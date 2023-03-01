@@ -31,7 +31,7 @@ python3 -m venv .
 
 4. Activate the virtual environment
 ```
-source bin/acitvate
+source bin/activate
 ```
 
 5. Install the requirements
@@ -70,6 +70,8 @@ If operating code is not specified or any number other than mentioned is specifi
 etc.
 
 The workbook should include the headings as well.
+
+3. The sheet name should be named as "Sheet".
 
 ## Application
 This script can be used to filter database of people with their details (name, address, telephone, email, URL) to ensure that data with only valid URLs remain.
