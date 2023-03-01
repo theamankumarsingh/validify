@@ -7,13 +7,35 @@ import sys
 
 #read source workbook from command line
 if len(sys.argv) < 2:
-    print("Usage: python3 script.py <workbook_name>")
+    print("Usage: python3 script.py <workbook_name> <operation code(optional)>")
     sys.exit(1)
 else:
     workbook_name=sys.argv[1]
+code=0  #code 0 for autofix only, code 1 for autofix and manual
+if len(sys.argv) >= 3:
+    code=int(sys.argv[2])
+    if code not in [0,1,2,3]:
+        code=0
 workbook_ext=".xlsx"
 if workbook_name[-5:] == ".xlsx":
     workbook_name=workbook_name[:-5]
+
+if code==0:
+    autofix=False
+    manualfix=True
+    cking=True
+elif code==1:
+    autofix=False
+    manualfix=False
+    cking=True
+elif code==2:
+    autofix=False
+    manualfix=True
+    cking=False
+else:
+    autofix=False
+    manualfix=False
+    cking=False
 
 #read sheet from workbook
 print("Reading workbook from file "+workbook_name+workbook_ext+" ...")
@@ -32,17 +54,17 @@ backup_data_dict=working_data_dict.copy()
 
 #cleaning
 #autoclean
-working_data_dict,data_problem_dict=clean.start_autofix(working_data_dict,data_problem_dict,skip=False)
+working_data_dict,data_problem_dict=clean.start_autofix(working_data_dict,data_problem_dict,skip=autofix)
 
 #clean (manual)
-working_data_dict=clean.start_manual(working_data_dict,data_problem_dict,workbook_name+"_edit"+workbook_ext,skip=True)
+working_data_dict=clean.start_manual(working_data_dict,data_problem_dict,workbook_name+"_edit"+workbook_ext,skip=manualfix)
 
 #post-processing
 diff_res,problem_keys=finalization.diff(backup_data_dict,working_data_dict,data_problem_dict)
 data_dict=finalization.change(working_data_dict,data_dict)
 dataset=finalization.modify(dataset,data_dict)
 dataset=finalization.remove_problem_keys(dataset,problem_keys)
-test_res=finalization.check(dataset,skip=False)
+test_res=finalization.check(dataset,skip=cking)
 
 #write sheet to workbook
 print("Writing workbook to file "+workbook_name+"_out"+workbook_ext+" ...")

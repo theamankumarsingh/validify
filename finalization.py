@@ -21,7 +21,7 @@ def change(working_data_dict, data_dict):
         data_dict[key]=working_data_dict[key]
     return data_dict
 
-def check(dataset, skip=False):
+def check(dataset, skip=True):
     #check if websites are valid
     if skip:
         return []

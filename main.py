@@ -4,12 +4,13 @@ import openpyxl
 import preparation
 import subprocess
 import numpy as np
+import os
 
-def launch_script_with_terminal(wb_name):
-    subprocess.Popen(["gnome-terminal","--","python3","script.py",wb_name])
+def launch_script_with_terminal(wb_name,code=0):
+    subprocess.Popen(["gnome-terminal","--","python3","script.py",wb_name,code])
 
 if len(sys.argv) < 3:
-    print("Usage: python3 script.py <workbook_name> <processes>")
+    print("Usage: python3 script.py <workbook_name> <processes> <operation code(optional)>")
     sys.exit(1)
 else:
     workbook_name=sys.argv[1]
@@ -17,6 +18,11 @@ process=int(sys.argv[2])
 if process < 1:
     print("Error: process count must be greater than 0")
     sys.exit(1)
+code=0  #code 0 for autofix only, code 1 for autofix and manual, code 2 for code 0 with check and code 3 for code 1 with check
+if len(sys.argv) >= 4:
+    code=int(sys.argv[3])
+    if code not in [0,1,2,3]:
+        code=0
 workbook_ext=".xlsx"
 if workbook_name[-5:] == ".xlsx":
     workbook_name=workbook_name[:-5]
@@ -51,7 +57,7 @@ for i in range(process):
         sheet_new['E'+str(row+1)]=dataset_n[row-1][5]
     wb_new.save(workbook_name+str(i)+workbook_ext)
     wb_new.close()
-    processes.append(multiprocessing.Process(target=launch_script_with_terminal,args=(workbook_name+str(i),)))
+    processes.append(multiprocessing.Process(target=launch_script_with_terminal,args=(workbook_name+str(i)," "+str(code))))
 
 #start all processes
 print("Starting all processes ("+str(process)+") ...")
@@ -90,5 +96,14 @@ for row in range(1,len(final_dataset)+1):
     sheet_new['E'+str(row+1)]=final_dataset[row-1][4]
 wb_new.save(workbook_name+"_output"+workbook_ext)
 wb_new.close()
+
+#cleaning up
+pwd=os.getcwd()
+folder_path = pwd
+files_to_keep = [workbook_name+workbook_ext,workbook_name+"_output"+workbook_ext]
+for filename in os.listdir(folder_path):
+    if filename.endswith(".xlsx") and filename not in files_to_keep:
+        os.remove(os.path.join(folder_path, filename))
+
 print("All done!")
 sys.exit(0)
