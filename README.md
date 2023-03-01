@@ -73,3 +73,6 @@ The workbook should include the headings as well.
 
 ## Application
 This script can be used to filter database of people with their details (name, address, telephone, email, URL) to ensure that data with only valid URLs remain.
+
+## Sample Screenshot
+![Sample](0.png "A sample screenshot showing script in action")
